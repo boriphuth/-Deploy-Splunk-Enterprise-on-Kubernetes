@@ -1,0 +1,75 @@
+# Global settings
+global:
+  logLevel: info
+  splunk:
+    hec:
+      protocol: https
+      insecureSSL: true
+      host: hec
+      port: 8088
+      token: 00000000-0000-0000-0000-000000000000
+  # Local config for logging chart
+  splunk-kubernetes-logging:
+    journalLogPath: /run/log/journal
+    splunk:
+      hec:
+      indexName: iks_logs
+  # Local config for objects chart
+  splunk-kubernetes-objects:
+    rbac:
+      create: true
+    serviceAccount:
+      create: true
+      name: splunk-kubernetes-objects
+    kubernetes:
+      insecureSSL: true
+    objects:
+      core:
+        v1:
+          – name: pods
+          interval: 30s
+          – name: namespaces
+          interval: 30s
+          – name: nodes
+          interval: 30s
+          – name: services
+          interval: 30s
+          – name: config_maps
+          interval: 30s
+          – name: secrets
+          interval: 30s
+          – name: persistent_volumes
+          interval: 30s
+          – name: service_accounts
+          interval: 30s
+          – name: persistent_volume_claims
+          interval: 30s
+          – name: resource_quotas
+          interval: 30s
+          – name: component_statuses
+        interval: 30s
+        – name: events
+        mode: watch
+      apps:
+        v1:
+        – name: deployments 
+        interval: 30s
+        – name: daemon_sets
+        interval: 30s
+        – name: replica_sets
+        interval: 30s
+        – name: stateful_sets
+        interval: 30s
+      splunk:
+        hec:
+        indexName: iks_meta
+  # Local config for metrics chart
+  splunk-kubernetes-metrics:
+    rbac:
+    create: true
+    serviceAccount:
+      create: true
+      name: splunk-kubernetes-metrics
+    splunk:
+      hec:
+      indexName: iks_metrics
